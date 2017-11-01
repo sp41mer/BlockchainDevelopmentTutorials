@@ -1,3 +1,5 @@
+pragma solidity ^0.4.11;
+
 contract HWL4L2Contract {
 	uint public costOfMagic;
 	uint public magicNumber;
