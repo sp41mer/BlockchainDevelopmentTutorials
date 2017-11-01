@@ -1,11 +1,18 @@
+// Указываем версию солидити для компилятора
 pragma solidity ^0.4.11;
 
-
 //Объявляем контракт
-contract Lesson4Level1App {
 
-  function Lesson4Level1App {
-    
-  }
+contract HWL4L1Contract {
 
+    uint public currentBlockNumber;
+	
+	function HWL4L1Contract () {
+	    currentBlockNumber = 0;
+	}
+	
+	// Метод, который устанавливает текущий номер блока в блокчейне в переменную currentBlockNumber
+	function discoverCurrentBlockNumber () public{
+        currentBlockNumber = block.number;
+	}
 }
