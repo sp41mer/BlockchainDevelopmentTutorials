@@ -1,3 +1,5 @@
+pragma solidity ^0.4.11;
+
 contract HWL4L3Contract {
     
     address public recipient;
