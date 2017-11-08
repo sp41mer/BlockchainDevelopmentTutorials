@@ -87,16 +87,22 @@ contract MyFirstERC20Coin {
         Approval(msg.sender, _to, _value);
     }
 
+    // Функция для отправки эфиров на контракт
     function() payable {
+        // Выполняем внутреннюю функцию контракта
         _buy(msg.sender, msg.value);
     }
 
+    // Функция для отправки эфиров на контракт (вызываемая)
     function buy() payable {
         _buy(msg.sender, msg.value);
     }
 
+    // Внутренняя функция покупки
     function _buy(address _from, uint _value) internal {
+        // Получаем количество возможных для покупки токенов по курсу
         uint amount = _value / buyPrice;
+        // Вызываем внутреннюю функцию перевода токенов
         _transfer(this, _from, amount);
     }
 }
