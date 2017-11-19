@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> First DApp</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src = "web3.js"></script>
+</head>
+<body>
+
+<input type = "text" id = "inputEthers">
+
+<div class="sendButton" style="cursor: pointer; background-color: blue; width: 50px; height: 50px">
+    Send
+</div>
+
+<script>
+
+    $(".sendButton").click(function(){
+
+        let Web3 = require('web3');
+        if (typeof web3 !== 'undefined'){
+            web3 = new Web3(web3.currentProvider);
+        }
+        else {
+            alert('You have to install MetaMask !');
+        }
+
+        const abi = [{"constant":true,"inputs":[],"name":"donator","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"payable":true,"stateMutability":"payable","type":"fallback"}];
+        const contractAddress = "0x24a048EF861b708290b4d9eB221Af0241D74F785";
+        let MyContract = web3.eth.contract(abi);
+        let myContractInstance = MyContract.at(contractAddress);
+
+        web3.eth.sendTransaction({
+                to: contractAddress,
+                from: web3.eth.accounts[0],
+                value: web3.toWei($('#inputEthers').val(), "ether")
+            },
+            function(error){
+                console.log(error);
+            }
+        );
+    });
+
+    $(".sendFucntionButton").click(function(){
+
+        let Web3 = require('web3');
+        if (typeof web3 !== 'undefined'){
+            web3 = new Web3(web3.currentProvider);
+        }
+        else {
+            alert('You have to install MetaMask !');
+        }
+
+        const abi = [{"constant":true,"inputs":[],"name":"donator","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"payable":true,"stateMutability":"payable","type":"fallback"}];
+        const contractAddress = "0x24a048EF861b708290b4d9eB221Af0241D74F785";
+        let MyContract = web3.eth.contract(abi);
+        let myContractInstance = MyContract.at(contractAddress);
+        let functionData = myContractInstance.buy.getData();
+        web3.eth.sendTransaction({
+                to:contractAddress,
+                from:web3.eth.accounts[0],
+                data: functionData,
+                value: web3.toWei($('#inputEthers').val(), "ether")
+            },
+            function(error){
+                console.log(error);
+            });
+    });
+
+</script>
+
+</body>
+</html>
+
