@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ICO</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src = "web3.js"></script>
+</head>
+<body>
+<input type = "text" id = "inputEthers">
+
+<div class="sendButton" style="cursor: pointer; background-color: blue; width: 50px; height: 50px">
+    Send
+</div>
+
+<script>
+
+    $(".sendButton").click(function(){
+
+        let Web3 = require('web3');
+        if (typeof web3 !== 'undefined'){
+            web3 = new Web3(web3.currentProvider);
+        }
+        else {
+            alert('You have to install MetaMask !');
+        }
+
+        const contractAddress = "0x68100B2326b6f11eBEEdC766AD37A415362e11B5";
+
+        web3.eth.sendTransaction({
+                to: contractAddress,
+                from: web3.eth.accounts[0],
+                value: web3.toWei($('#inputEthers').val(), "ether")
+            },
+            function(error){
+                console.log(error);
+            }
+        );
+    });
+</script>
+</body>
+</html>
