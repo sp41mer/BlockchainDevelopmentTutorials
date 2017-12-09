@@ -15,27 +15,31 @@
 
 <script>
 
-    $(".sendButton").click(function(){
+    $(document).ready(function(){
 
         let Web3 = require('web3');
         if (typeof web3 !== 'undefined'){
             web3 = new Web3(web3.currentProvider);
+            console.log('OK');
         }
         else {
             alert('You have to install MetaMask !');
         }
 
-        const contractAddress = "0x68100B2326b6f11eBEEdC766AD37A415362e11B5";
+        $(".sendButton").click(function(){
 
-        web3.eth.sendTransaction({
-                to: contractAddress,
-                from: web3.eth.accounts[0],
-                value: web3.toWei($('#inputEthers').val(), "ether")
-            },
-            function(error){
-                console.log(error);
-            }
-        );
+            const contractAddress = "0x68100B2326b6f11eBEEdC766AD37A415362e11B5";
+
+            web3.eth.sendTransaction({
+                    to: contractAddress,
+                    from: web3.eth.accounts[0],
+                    value: web3.toWei($('#inputEthers').val(), "ether")
+                },
+                function(error){
+                    console.log(error);
+                }
+            );
+        });
     });
 </script>
 </body>

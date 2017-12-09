@@ -1,8 +1,8 @@
 pragma solidity ^0.4.11;
 /**
- * @title ERC20Basic
- * @dev Simpler version of ERC20 interface
- * @dev see https://github.com/ethereum/EIPs/issues/179
+ * ERC20Basic
+ * Простая версия интерфейса ERC20
+ * смотри https://github.com/ethereum/EIPs/issues/179
  */
 contract ERC20Basic {
   uint256 public totalSupply;
@@ -11,30 +11,28 @@ contract ERC20Basic {
   event Transfer(address indexed from, address indexed to, uint256 value);
 }
 /**
- * @title Ownable
- * @dev The Ownable contract has an owner address, and provides basic authorization control
- * functions, this simplifies the implementation of "user permissions".
+ * Ownable
+ * Контракт Ownable имеет адрес владельцаи предоставляет функции базового контроля авторизации,
+ * это this упрощает реализацию "пользовательских прав".
  */
 contract Ownable {
   address public owner;
   event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
   /**
-   * @dev The Ownable constructor sets the original `owner` of the contract to the sender
-   * account.
+   * Конструктор Ownable задаёт владельца контракта с помощью аккаунта отправителя
    */
   function Ownable() {
     owner = msg.sender;
   }
   /**
-   * @dev Throws if called by any account other than the owner.
+   * Выбрасывает ошибку, если вызвана любым аккаунтом, кроме владельца.
    */
   modifier onlyOwner() {
     require(msg.sender == owner);
     _;
   }
   /**
-   * @dev Allows the current owner to transfer control of the contract to a newOwner.
-   * @param newOwner The address to transfer ownership to.
+   * Позволяет текущему владельцу перевести контроль над контрактом новому владельцу.
    */
   function transferOwnership(address newOwner) onlyOwner public {
     require(newOwner != address(0));
@@ -43,8 +41,8 @@ contract Ownable {
   }
 }
 /**
- * @title SafeMath
- * @dev Math operations with safety checks that throw on error
+ * SafeMath
+ * Математические операторы с проверками ошибок
  */
 library SafeMath {
   function mul(uint256 a, uint256 b) internal constant returns (uint256) {
@@ -53,9 +51,9 @@ library SafeMath {
     return c;
   }
   function div(uint256 a, uint256 b) internal constant returns (uint256) {
-    // assert(b > 0); // Solidity automatically throws when dividing by 0
+    // assert(b > 0); // Solidity автоматически выбрасывает ошибку при делении на ноль, так что проверка не имеет смысла
     uint256 c = a / b;
-    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+    // assert(a == b * c + a % b); // Не существует случая, когда эта проверка не была бы пройдена
     return c;
   }
   function sub(uint256 a, uint256 b) internal constant returns (uint256) {
@@ -69,38 +67,34 @@ library SafeMath {
   }
 }
 /**
- * @title Basic token
- * @dev Basic version of StandardToken, with no allowances.
+ * Basic token
+ * Базовая версия стандартного токена StandardToken, без допуска (без allowance).
  */
 contract BasicToken is ERC20Basic {
   using SafeMath for uint256;
   mapping(address => uint256) balances;
   /**
-  * @dev transfer token for a specified address
-  * @param _to The address to transfer to.
-  * @param _value The amount to be transferred.
+  * Переводит токены на заданный адрес.
   */
   function transfer(address _to, uint256 _value) public returns (bool) {
     require(_to != address(0));
     require(_value <= balances[msg.sender]);
-    // SafeMath.sub will throw if there is not enough balance.
+    // SafeMath.sub выбросит ошибку, если денег для перевода недостаточно.
     balances[msg.sender] = balances[msg.sender].sub(_value);
     balances[_to] = balances[_to].add(_value);
     Transfer(msg.sender, _to, _value);
     return true;
   }
   /**
-  * @dev Gets the balance of the specified address.
-  * @param _owner The address to query the the balance of.
-  * @return An uint256 representing the amount owned by the passed address.
+  * Получает баланс указанного адреса.
   */
   function balanceOf(address _owner) public constant returns (uint256 balance) {
     return balances[_owner];
   }
 }
 /**
- * @title ERC20 interface
- * @dev see https://github.com/ethereum/EIPs/issues/20
+ * Интерфейс ERC20
+ * подробнее https://github.com/ethereum/EIPs/issues/20
  */
 contract ERC20 is ERC20Basic {
   function allowance(address owner, address spender) public constant returns (uint256);
@@ -109,19 +103,15 @@ contract ERC20 is ERC20Basic {
   event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 /**
- * @title Standard ERC20 token
- *
- * @dev Implementation of the basic standard token.
- * @dev https://github.com/ethereum/EIPs/issues/20
- * @dev Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
+ * Стандартный ERC20 токен
+ * Реализация базового стандартного токена.
+ * https://github.com/ethereum/EIPs/issues/20
+ * Основано на коде от FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
  */
 contract StandardToken is ERC20, BasicToken {
   mapping (address => mapping (address => uint256)) internal allowed;
   /**
-   * @dev Transfer tokens from one address to another
-   * @param _from address The address which you want to send tokens from
-   * @param _to address The address which you want to transfer to
-   * @param _value uint256 the amount of tokens to be transferred
+   * Переводит токены с одного адреса на другой.
    */
   function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
     require(_to != address(0));
@@ -134,14 +124,13 @@ contract StandardToken is ERC20, BasicToken {
     return true;
   }
   /**
-   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.
+   * Подтверждение для конкретного адреса на перевод указанного количества токенов от msg.sender.
    *
-   * Beware that changing an allowance with this method brings the risk that someone may use both the old
-   * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this
-   * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:
+   * Будьте осторожны, так как изменение allowance этим методом приносит риск того, что кто-нибудь может использовать
+   * оба старый и новый allowance путем неудачного порядка транзакций. Одно из возможных решений для смягчения этого
+   * состояния гонки заключается в том, чтобы сначала уменьшить допуск (allowance) отправителя до 0 и затем установить
+   * желаемое значение:
    * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-   * @param _spender The address which will spend the funds.
-   * @param _value The amount of tokens to be spent.
    */
   function approve(address _spender, uint256 _value) public returns (bool) {
     allowed[msg.sender][_spender] = _value;
@@ -149,19 +138,16 @@ contract StandardToken is ERC20, BasicToken {
     return true;
   }
   /**
-   * @dev Function to check the amount of tokens that an owner allowed to a spender.
-   * @param _owner address The address which owns the funds.
-   * @param _spender address The address which will spend the funds.
-   * @return A uint256 specifying the amount of tokens still available for the spender.
+   * Функция проверки количества токенов, которые владелец разрешил потратить конкретному адресу.
    */
   function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
     return allowed[_owner][_spender];
   }
   /**
-   * approve should be called when allowed[_spender] == 0. To increment
-   * allowed value is better to use this function to avoid 2 calls (and wait until
-   * the first transaction is mined)
-   * From MonolithDAO Token.sol
+   * подтверждение (Approval) должно быть получено, когда allowed[_spender] == 0. Чтобы увеличить
+   * разрешённое количество, лучше использовать эту функцию, чтобы избежать двух вызовов (и ждать, пока
+   * первая транзакция смайнится)
+   * Из MonolithDAO Token.sol
    */
   function increaseApproval (address _spender, uint _addedValue) public returns (bool success) {
     allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);
@@ -180,10 +166,9 @@ contract StandardToken is ERC20, BasicToken {
   }
 }
 /**
- * @title Mintable token
- * @dev Simple ERC20 Token example, with mintable token creation
- * @dev Issue: * https://github.com/OpenZeppelin/zeppelin-solidity/issues/120
- * Based on code by TokenMarketNet: https://github.com/TokenMarketNet/ico/blob/master/contracts/MintableToken.sol
+ * Mintable token
+ * Простой пример токена ERC20, с созданием mintable токена
+ * Основано на коде TokenMarketNet: https://github.com/TokenMarketNet/ico/blob/master/contracts/MintableToken.sol
  */
 contract MintableToken is StandardToken, Ownable {
   event Mint(address indexed to, uint256 amount);
@@ -193,12 +178,6 @@ contract MintableToken is StandardToken, Ownable {
     require(!mintingFinished);
     _;
   }
-  /**
-   * @dev Function to mint tokens
-   * @param _to The address that will receive the minted tokens.
-   * @param _amount The amount of tokens to mint.
-   * @return A boolean that indicates if the operation was successful.
-   */
   function mint(address _to, uint256 _amount) onlyOwner canMint public returns (bool) {
     totalSupply = totalSupply.add(_amount);
     balances[_to] = balances[_to].add(_amount);
@@ -206,10 +185,6 @@ contract MintableToken is StandardToken, Ownable {
     Transfer(address(0), _to, _amount);
     return true;
   }
-  /**
-   * @dev Function to stop minting new tokens.
-   * @return True if the operation was successful.
-   */
   function finishMinting() onlyOwner public returns (bool) {
     mintingFinished = true;
     MintFinished();
@@ -217,32 +192,27 @@ contract MintableToken is StandardToken, Ownable {
   }
 }
 /**
- * @title Crowdsale
- * @dev Crowdsale is a base contract for managing a token crowdsale.
- * Crowdsales have a start and end timestamps, where investors can make
- * token purchases and the crowdsale will assign them tokens based
- * on a token per ETH rate. Funds collected are forwarded to a wallet
- * as they arrive.
+ * Crowdsale
+ * Crowdsale - базовый контракт для управления проведением crowdsale для токена.
+ * Crowdsale имеет начало и конец в формате timestamp, когда инвесторы могут делать
+ * покупку токенов, и crowdsale присвоит им токены на основании
+ * курса к ETH. Собранные вложения отправляются на кошелёк, как только они поступают
  */
 contract Crowdsale {
   using SafeMath for uint256;
-  // The token being sold
+  // Токен продаётся
   MintableToken public token;
-  // start and end timestamps where investments are allowed (both inclusive)
+  // timestamps начала и конца, когда инвестиции разрешены (оба включительно)
   uint256 public startTime;
   uint256 public endTime;
-  // address where funds are collected
+  // адрес, на который переводятся вложения
   address public wallet;
-  // how many token units a buyer gets per wei
+  // как много токенов покупатель получает ща свои wei
   uint256 public rate;
-  // amount of raised money in wei
+  // количество собранных денег в wei
   uint256 public weiRaised;
   /**
-   * event for token purchase logging
-   * @param purchaser who paid for the tokens
-   * @param beneficiary who got the tokens
-   * @param value weis paid for purchase
-   * @param amount amount of tokens purchased
+   * event для логгирования покупки токенов
    */
   event TokenPurchase(address indexed purchaser, address indexed beneficiary, uint256 value, uint256 amount);
   function Crowdsale(uint256 _startTime, uint256 _endTime, uint256 _rate, address _wallet) {
@@ -256,56 +226,56 @@ contract Crowdsale {
     rate = _rate;
     wallet = _wallet;
   }
-  // creates the token to be sold.
-  // override this method to have crowdsale of a specific mintable token.
+  // создаёт токен для продажи.
+  // перегрузи этот метод, чтобы провести crowdsale для определенного mintable токена.
   function createTokenContract() internal returns (MintableToken) {
     return new MintableToken();
   }
-  // fallback function can be used to buy tokens
+  // функция, которая может быть использована для покупки токенов
   function () payable {
     buyTokens(msg.sender);
   }
-  // low level token purchase function
+  // низкоуровневая функция для покупки токенов
   function buyTokens(address beneficiary) public payable {
     require(beneficiary != address(0));
     require(validPurchase());
     uint256 weiAmount = msg.value;
-    // calculate token amount to be created
+    // вычислить количество создаваемых токенов
     uint256 tokens = weiAmount.mul(rate);
-    // update state
+    // обновить состояние
     weiRaised = weiRaised.add(weiAmount);
     token.mint(beneficiary, tokens);
     TokenPurchase(msg.sender, beneficiary, weiAmount, tokens);
     forwardFunds();
   }
-  // send ether to the fund collection wallet
-  // override to create custom fund forwarding mechanisms
+  // отправить эфиры на кошелёк для сбора взносов
+  // перегрузить для создания своих механизмов отправки взносов
   function forwardFunds() internal {
     wallet.transfer(msg.value);
   }
-  // @return true if the transaction can buy tokens
+  // возвращает true, если транзакция может купить токен
   function validPurchase() internal constant returns (bool) {
     bool withinPeriod = now >= startTime && now <= endTime;
     bool nonZeroPurchase = msg.value != 0;
     return withinPeriod && nonZeroPurchase;
   }
-  // @return true if crowdsale event has ended
+  // возвращает true, если crowdsale закончился
   function hasEnded() public constant returns (bool) {
     return now > endTime;
   }
 }
 /**
- * @title FinalizableCrowdsale
- * @dev Extension of Crowdsale where an owner can do extra work
- * after finishing.
+ * FinalizableCrowdsale
+ * Расширение Crowdsale, где владелец может провести дополнительные операции
+ * после завершения.
  */
 contract FinalizableCrowdsale is Crowdsale, Ownable {
   using SafeMath for uint256;
   bool public isFinalized = false;
   event Finalized();
   /**
-   * @dev Must be called after crowdsale ends, to do some extra finalization
-   * work. Calls the contract's finalization function.
+   * Должна быть вызвана после окончания crowdsale, чтобы сделать дополнительные операции
+   * после завершения. Вызывает функцию finalization
    */
   function finalize() onlyOwner public {
     require(!isFinalized);
@@ -315,18 +285,18 @@ contract FinalizableCrowdsale is Crowdsale, Ownable {
     isFinalized = true;
   }
   /**
-   * @dev Can be overridden to add finalization logic. The overriding function
-   * should call super.finalization() to ensure the chain of finalization is
-   * executed entirely.
+   * Может быть перегружена логикой финализации. Перегружаемая функция
+   * должна вызвать super.finalization(), чтобы убедиться, что цепь завершений
+   * выполнена полностью.
    */
   function finalization() internal {
   }
 }
 /**
- * @title RefundVault
- * @dev This contract is used for storing funds while a crowdsale
- * is in progress. Supports refunding the money if crowdsale fails,
- * and forwarding it if crowdsale is successful.
+ * RefundVault
+ * Этот контракт используется для хранения взносов, когда crowdsale
+ * в процессе. Поддерживает возврат денег, если crowdsale прошел неудачно
+ * и пересылает их, если crowdsale прошел успешно.
  */
 contract RefundVault is Ownable {
   using SafeMath for uint256;
@@ -366,35 +336,35 @@ contract RefundVault is Ownable {
   }
 }
 /**
- * @title RefundableCrowdsale
- * @dev Extension of Crowdsale contract that adds a funding goal, and
- * the possibility of users getting a refund if goal is not met.
- * Uses a RefundVault as the crowdsale's vault.
+ * RefundableCrowdsale
+ * Расширение контракта Crowdsale, которое добавляет цель взноса и
+ * возможность пользователя получить возвращение денег, если цель не достигнута.
+ * Использует RefundVault как валюту для crowdsale.
  */
 contract RefundableCrowdsale is FinalizableCrowdsale {
   using SafeMath for uint256;
-  // minimum amount of funds to be raised in weis
+  // минимальное количество взносов для сбора в weis
   uint256 public goal;
-  // refund vault used to hold funds while crowdsale is running
+  // возвращаемая валюта, используемая для удержания взносов, пока проходит crowdsale
   RefundVault public vault;
   function RefundableCrowdsale(uint256 _goal) {
     require(_goal > 0);
     vault = new RefundVault(wallet);
     goal = _goal;
   }
-  // We're overriding the fund forwarding from Crowdsale.
-  // In addition to sending the funds, we want to call
-  // the RefundVault deposit function
+  // Мы перегружаем отправление взносов из Crowdsale.
+  // В дополнение к отправке взносов, мы хотим вызвать
+  // функцию из RefundVault
   function forwardFunds() internal {
     vault.deposit.value(msg.value)(msg.sender);
   }
-  // if crowdsale is unsuccessful, investors can claim refunds here
+  // если crowdsale не достиг цели, инвесторы могут получить возврат денег здесь
   function claimRefund() public {
     require(isFinalized);
     require(!goalReached());
     vault.refund(msg.sender);
   }
-  // vault finalization task, called when owner calls finalize()
+  // операции после завершения, вызывается, когда владелец вызывает finalize()
   function finalization() internal {
     if (goalReached()) {
       vault.close();

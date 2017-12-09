@@ -1,38 +1,3 @@
-/// token.sol -- ERC20 implementation with minting and burning
-// Copyright (C) 2015, 2016, 2017  DappHub, LLC
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-pragma solidity ^0.4.13;
-/// stop.sol -- mixin for enable/disable functionality
-// Copyright (C) 2017  DappHub, LLC
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 contract DSAuthority {
     function canCall(
         address src, address dst, bytes4 sig
@@ -79,17 +44,6 @@ contract DSAuth is DSAuthEvents {
         }
     }
 }
-/// note.sol -- the `note' modifier, for logging calls as events
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 contract DSNote {
     event LogNote(
         bytes4   indexed  sig,
@@ -123,30 +77,7 @@ contract DSStop is DSNote, DSAuth {
         stopped = false;
     }
 }
-/// base.sol -- basic ERC20 implementation
-// Copyright (C) 2015, 2016, 2017  DappHub, LLC
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// Token standard API
-// https://github.com/ethereum/EIPs/issues/20
+/// base.sol -- базовая реализация ERC20
 contract ERC20 {
     function totalSupply() public view returns (uint supply);
     function balanceOf( address who ) public view returns (uint value);
@@ -157,17 +88,6 @@ contract ERC20 {
     event Transfer( address indexed from, address indexed to, uint value);
     event Approval( address indexed owner, address indexed spender, uint value);
 }
-/// math.sol -- mixin for inline numerical wizardry
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 contract DSMath {
     function add(uint x, uint y) internal pure returns (uint z) {
         require((z = x + y) >= x);
@@ -204,20 +124,17 @@ contract DSMath {
     function rdiv(uint x, uint y) internal pure returns (uint z) {
         z = add(mul(x, RAY), y / 2) / y;
     }
-    // This famous algorithm is called "exponentiation by squaring"
-    // and calculates x^n with x as fixed-point and n as regular unsigned.
+    // Этот известный алгоритм называется "возведение в степень по квадрату"
+    // и вычисляет x^n с x с фиксированной точкой и n как обычное беззнаковое число.
     //
-    // It's O(log n), instead of O(n) for naive repeated multiplication.
+    // Сложность -  O(log n), в отличие от O(n) для очевидного повторяющегося умножения.
     //
-    // These facts are why it works:
+    // Вот, почему это работает:
     //
-    //  If n is even, then x^n = (x^2)^(n/2).
-    //  If n is odd,  then x^n = x * x^(n-1),
-    //   and applying the equation for even x gives
+    //  Если n четное, то x^n = (x^2)^(n/2).
+    //  Если n нечетное,  то x^n = x * x^(n-1),
+    //   и применение выражения для четного х дает
     //    x^n = x * (x^2)^((n-1) / 2).
-    //
-    //  Also, EVM division is flooring and
-    //    floor[(n-1) / 2] = floor[n / 2].
     //
     function rpow(uint x, uint n) internal pure returns (uint z) {
         z = n % 2 != 0 ? x : RAY;
@@ -270,7 +187,7 @@ contract DSTokenBase is ERC20, DSMath {
 contract DSToken is DSTokenBase(0), DSStop {
     mapping (address => mapping (address => bool)) _trusted;
     bytes32  public  symbol;
-    uint256  public  decimals = 18; // standard token precision. override to customize
+    uint256  public  decimals = 18;
     function DSToken(bytes32 symbol_) public {
         symbol = symbol_;
     }
@@ -328,7 +245,7 @@ contract DSToken is DSTokenBase(0), DSStop {
         _supply = sub(_supply, wad);
         Burn(guy, wad);
     }
-    // Optional token name
+    // Опциональное имя токена
     bytes32   public  name = "";
     function setName(bytes32 name_) public auth {
         name = name_;
