@@ -1,47 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Application</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src = "web3.js"></script>
-</head>
-<body>
-<input type = "text" id = "inputString">
+    <head>
+        <meta charset="UTF-8">
+        <title>Application</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src = "web3.js"></script>
 
-<div class="sendButton" style="cursor: pointer; background-color: #32ff4d; width: 50px; height: 50px">
-    Send
-</div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
-<script>
+    </head>
+    <body>
+    <div class="row" align="center" style="margin-top: 20vh">
 
-    $(".sendButton").click(function(){
+        <img src="http://bitcoin-4k.com/wp-content/uploads/2017/06/Ethereum-Classic-ETC.png"><br>
+        <input type = "text" id = "inputString" style="width: 200px"><br>
+        <div class="waves-effect waves-light btn" style="cursor: pointer; background-color: #32ff4d;">
+            Send
+        </div>
+    </div>
 
-        let Web3 = require('web3');
-        if (typeof web3 !== 'undefined'){
-            web3 = new Web3(web3.currentProvider);
-        }
-        else {
-            alert('You have to install MetaMask !');
-        }
+        <script>
 
-        const abi = [{"constant":false,"inputs":[{"name":"_message","type":"string"}],"name":"setMessage","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_price","type":"uint256"}],"name":"setPrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"price","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastDonator","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"message","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"token","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_token","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"}];
-        const contractAddress = "0xb0998Ac266607a44804F16b25056b1Bf14b85DA2";
-        let MyContract = web3.eth.contract(abi);
-        let myContractInstance = MyContract.at(contractAddress);
-        debugger;
-        let functionData = myContractInstance.setMessage.getData($('#inputString').val());
-        web3.eth.sendTransaction({
-                to:contractAddress,
-                from:web3.eth.accounts[0],
-                data: functionData,
-            },
-            function(error, response){
+            $(".sendButton").click(function(){
+
+                let Web3 = require('web3');
+                if (typeof web3 !== 'undefined'){
+                    web3 = new Web3(web3.currentProvider);
+                }
+                else {
+                    alert('You have to install MetaMask !');
+                }
+
+                const abi = [{"constant":false,"inputs":[{"name":"_message","type":"string"}],"name":"setMessage","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_price","type":"uint256"}],"name":"setPrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"price","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastDonator","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"message","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"token","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_token","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"}];
+                const contractAddress = "0xb0998Ac266607a44804F16b25056b1Bf14b85DA2";
+                let MyContract = web3.eth.contract(abi);
+                let myContractInstance = MyContract.at(contractAddress);
                 debugger;
-                console.log(response);
+                let functionData = myContractInstance.setMessage.getData($('#inputString').val());
+                web3.eth.sendTransaction({
+                        to:contractAddress,
+                        from:web3.eth.accounts[0],
+                        data: functionData,
+                    },
+                    function(error, response){
+                        console.log(response);
+                    });
             });
-    });
 
-</script>
-</body>
+        </script>
+    </body>
 </html>

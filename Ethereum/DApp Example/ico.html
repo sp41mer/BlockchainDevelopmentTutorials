@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <title>ICO</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src = "web3.js"></script>
+    <script type="text/javascript" src="web3.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </head>
 <body>
-<input type = "text" id = "inputEthers">
+<div class="row" align="center" style="margin-top: 20vh">
 
-<div class="sendButton" style="cursor: pointer; background-color: blue; width: 50px; height: 50px">
-    Send
+    <img src="http://bitcoin-4k.com/wp-content/uploads/2017/06/Ethereum-Classic-ETC.png"><br>
+    <input type = "text" id = "inputEthers" style="width: 200px"><br>
+    <div class="waves-effect waves-light btn" style="cursor: pointer; background-color: #32ff4d;">
+        Send
+    </div>
 </div>
 
 <script>
 
-    $(document).ready(function(){
+    $(document).ready(function () {
 
         let Web3 = require('web3');
-        if (typeof web3 !== 'undefined'){
+        if (typeof web3 !== 'undefined') {
             web3 = new Web3(web3.currentProvider);
             console.log('OK');
         }
@@ -26,7 +31,7 @@
             alert('You have to install MetaMask !');
         }
 
-        $(".sendButton").click(function(){
+        $(".sendButton").click(function () {
 
             const contractAddress = "0x68100B2326b6f11eBEEdC766AD37A415362e11B5";
 
@@ -35,7 +40,7 @@
                     from: web3.eth.accounts[0],
                     value: web3.toWei($('#inputEthers').val(), "ether")
                 },
-                function(error){
+                function (error) {
                     console.log(error);
                 }
             );
