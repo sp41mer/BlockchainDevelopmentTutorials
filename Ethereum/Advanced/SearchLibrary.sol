@@ -24,7 +24,7 @@ contract ContractWithBigArrays {
 	uint[] bigArrayOfNumbers;
 
 	// Функция для того, чтобы добавить число в массив
-	function push(uint _value) {
+	function push(uint _value) public {
 		bigArrayOfNumbers.push(_value);
 	}
 
@@ -32,7 +32,7 @@ contract ContractWithBigArrays {
 	// Функция, которой мы будем заменять старое число на новое
 	// 1,9 => [9,2,3,4,5,6,7,8,9]
 	// 10,1 => [1,2,3,4,5,6,7,8,9,1]
-	function replace(uint _old, uint _new) {
+	function replace(uint _old, uint _new) public {
 		// Ищем позицию с помощью библиотеки
 		uint position = data.searchFor(_old);
 		// Если позиция такая не была найдена - добавляем элемент

@@ -8,7 +8,7 @@ contract TokenTransferer {
 
 	Token token;
 
-	function simpleInterfaceCall(address _to){
+	function simpleInterfaceCall(address _to) public {
 		token.transfer(_to, 2);
 	}
 }

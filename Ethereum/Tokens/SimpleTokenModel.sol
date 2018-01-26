@@ -20,7 +20,7 @@ contract MyToken {
     // Функция для отправки токенов
     // Фукнция принимает адрес того, кому нужно отправить токены
     // и число токенов, которое мы хотим отправить
-    function transfer(address _to, uint256 _value) {
+    function transfer(address _to, uint256 _value) public {
         // Проверяем хватает ли токенов у того, кто хочет их отправить
         require(balanceOf[msg.sender] >= _value);
         // Проверяем, не произошло ли переполнение
