@@ -18,4 +18,4 @@
 
 [Tokens](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Tokens) - примеры реализации токенов
 
-[Web3 Simple Example] (https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Web3%20Simple%20Example) - простой пример для взаимодействия с Web3
+[Web3 Simple Example](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Web3%20Simple%20Example) - простой пример для взаимодействия с Web3
