@@ -4,18 +4,18 @@
 
 
 
-[ENVIRONMENT.md](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/ENVIRONMENT.md) - файл, в котором описано как быстро начать разработку в блокчейне Ethereum
+[ENVIRONMENT.md](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/Ethereum/ENVIRONMENT.md) - файл, в котором описано как быстро начать разработку в блокчейне Ethereum
 
-[Base Solidity](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/VerySimpleContract.sol) - здесь лежит наиболее простая версия смарт-контракта
+[Base Solidity](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Base%20Solidity) - здесь  находятся наиболее простые версии смарт-контрактов
 
-[Advanced](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/LessSimpleContract) - здесь лежит более сложный смарт-контракт, в котором реализован механизм наследования
+[Advanced](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Advanced) - более сложные версии смарт-контрактов
 
-[DApp Example](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/SimpleTokenModel) - здесь лежит самая простая версия токена
+[DApp Example](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/DApp%20Example) - самый простой пример реализации DApp
 
-[ICO Contracts](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/ERC20Token.sol) - здесь лежит базовая имплементация ERC-20 токена
+[ICO Contracts](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/ICO%20Contracts) - примеры реализации контрактов ICO
 
-[Open Source Examples](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/WrongICO.sol) - здесь лежит "неправильная версия" ICO (все в одном контракте)
+[Open Source Examples](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Open%20Source%20Exapmples) - здесь разобраны наиболее часто используемые Open Source проекты
 
-[Tokens](https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/MinimalisticICO.sol) - здесь лежит базовая версия ICO
+[Tokens](https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Tokens) - примеры реализации токенов
 
-[Web2 Simple Example(https://github.com/sp41mer/BlockchainDevelopmentTutorials/blob/master/SampleICO.sol) - здесь лежит пример контракта ICO от OpenZeppelin
+[Web3 Simple Example(https://github.com/sp41mer/BlockchainDevelopmentTutorials/tree/master/Ethereum/Web3%20Simple%20Example) - простой пример для взаимодействия с Web3
