@@ -10,7 +10,7 @@ contract DollarCost is usingOraclize {
 	uint public dollarCost;
 
 	// В эту функцию ораклайзер будет присылать нам результат
-	function __callback(bytes32 myid, string result){
+	function __callback(bytes32 myid, string result) public {
 		// Проверяем, что функцию действительно вызывает ораклайзер
 		if (msg.sender != oraclize_cbAddress()) throw;
 		// Обновляем переменную со стоимостью доллара
@@ -18,7 +18,7 @@ contract DollarCost is usingOraclize {
 	}
 
 	// Функция для обновления курса доллара
-	function updatePrice() payable {
+	function updatePrice() public payable {
 		// Проверяем, что хватает средств на вызов функции
 		if (oraclize_getPrice("URL") > this.balance){
 			// Если не хватает, просто завершаем выполнение

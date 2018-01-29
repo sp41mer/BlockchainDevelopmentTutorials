@@ -76,7 +76,7 @@ contract MyFirstERC20Coin {
     }
 
     // Функция для "одобрения" перевода токенов
-    function approve(address _to, uint256 _value){
+    function approve(address _to, uint256 _value) public {
         allowance[msg.sender][_to] = _value;
         Approval(msg.sender, _to, _value);
         // Вызов эвента для логгирования события одобрения перевода токенов
