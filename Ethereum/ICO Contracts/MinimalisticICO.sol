@@ -10,7 +10,7 @@ interface MyFirstERC20ICO {
 contract MyFirstSafeICO {
 
     // Объявляем переменную для стомости токена
-    uint8 public buyPrice;
+    uint public buyPrice;
 
     // Объявялем переменную для токена
     MyFirstERC20ICO public token;
