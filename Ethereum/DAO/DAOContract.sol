@@ -60,7 +60,7 @@ contract DAOContract {
         // Проверяем, что получили достаточное количество голосов
         require(election.numberOfVotes >= minVotes);
         // Если собрали нужное число голосов, то обновляем имя
-        if (election.current >= int256(minVotes) ){
+        if (election.current > 0 ){
             token.changeName(proposalName);
         }
 
