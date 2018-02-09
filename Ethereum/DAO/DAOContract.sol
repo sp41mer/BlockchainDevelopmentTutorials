@@ -1,75 +1,91 @@
 pragma solidity ^0.4.11;
 
-interface ChangeNameToken{
+// Интерфейс токена
+interface ChangableToken {
     function stop();
     function start();
     function changeSymbol(string name);
     function balanceOf(address user) returns (uint256);
 }
 
-
+// Контракт ДАО
 contract DAOContract {
 
-    ChangeNameToken public token;
+    // Переменная для хранения токена
+    ChangableToken public token;
 
-    uint8 public minVotes = 6;
+    // Минимальное число голосов
+    uint8 public minVotes;
 
+    // Переменная для предложенного названия
     string public proposalName;
 
+    // Переменная для хранения состояния голосования
     bool public voteActive = false;
 
+    // Стукрутра для голосов
     struct Votes {
-    int current;
-    uint numberOfVotes;
+        int current;
+        uint numberOfVotes;
     }
 
+    // Переменная для структуры голосов
     Votes public election;
 
-    function DAOContract(ChangeNameToken _token){
+    // Функция инициализации ( принимает адрес токена)
+    function DAOContract(ChangableToken _token){
         token = _token;
     }
 
-    // Фукнция для предложения нового имени
+    // Функция для предложения нового символа
     function newName(string _proposalName) public {
-        // Проверяем, что голосование не идет сейчас
+
+        // Проверяем, что голосвание не идет
         require(!voteActive);
         proposalName = _proposalName;
         voteActive = true;
+
+        // Остановка работы токена
         token.stop();
     }
 
-    // Фукнция для голосования
+    // Функция для голосования
     function vote(bool _vote) public {
-        // Проверяем, что идет голосование
+        // Проверяем, что голосование идет
         require(voteActive);
-
-        // Логика для голования
+        // Логика для голосования
         if (_vote){
-            election.current += int256(token.balanceOf(msg.sender));
+            election.current += int(token.balanceOf(msg.sender));
         }
         else {
-            election.current -= int256(token.balanceOf(msg.sender));
-
+            election.current -= int(token.balanceOf(msg.sender));
         }
+
         election.numberOfVotes += token.balanceOf(msg.sender);
+
     }
 
+    // Функция для смены символа
     function changeSymbol() public {
-        // Проверяем, что голование активно
-        require(voteActive);
-        // Проверяем, что получили достаточное количество голосов
-        require(election.numberOfVotes >= minVotes);
-        // Если собрали нужное число голосов, то обновляем имя
-        if (election.current >= int256(minVotes) ){
-            token.changeName(proposalName);
-        }
 
+        // Проверяем, что голосование активно
+        require(voteActive);
+
+        // Проверяем, что было достаточное количество голосов
+        require(election.numberOfVotes >= minVotes);
+
+        // Логика для смены символа
+        if (election.current > 0) {
+            token.changeSymbol(proposalName);
+        }
         // Сбрасываем все переменные для голосования
         election.numberOfVotes = 0;
         election.current = 0;
         voteActive = false;
 
+        // Возобновляем работу токена
         token.start();
+
     }
 
 }

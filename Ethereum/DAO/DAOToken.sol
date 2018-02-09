@@ -1,62 +1,72 @@
 // Указываем версию для компилятора
 pragma solidity ^0.4.11;
 
+// Контракт для установки прав
+contract OwnableWithDAO{
 
-contract OwnableWithDAO {
-
+    // Переменная для хранения владельца контракта
     address public owner;
+
+    // Переменная для хранения адреса DAO
     address public daoContract;
 
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-    /**
-     * Конструктор Ownable задаёт владельца контракта с помощью аккаунта отправителя
-     */
+    // Конструктор, который при создании инициализирует переменную с владельцем
     function OwnableWithDAO() {
         owner = msg.sender;
     }
-    /**
-     * Выбрасывает ошибку, если вызвана любым аккаунтом, кроме владельца.
-     */
-    modifier onlyOwner() {
+
+    // Модификатор для защиты от вызовов не создалетя контракта
+    modifier onlyOwner(){
         require(msg.sender == owner);
         _;
     }
 
-    modifier onlyDAO() {
+
+    // Модификатор для защиты от вызовов не со стороны DAO
+    modifier onlyDAO(){
         require(msg.sender == daoContract);
         _;
     }
-    /**
-     * Позволяет текущему владельцу перевести контроль над контрактом новому владельцу.
-     */
-    function transferOwnership(address newOwner) onlyOwner public {
+
+    // Функция для замены владельца
+    function transferOwnership(address newOwner) onlyOwner public{
         require(newOwner != address(0));
-        OwnershipTransferred(owner, newOwner);
         owner = newOwner;
     }
 
+    // Функция для установки / замены контракта DAO
     function setDAOContract(address newDAO) onlyOwner public {
         daoContract = newDAO;
     }
 }
 
-contract Stoppable is OwnableWithDAO {
+
+// Контракт для остановки некоторых операций
+contract Stoppable is OwnableWithDAO{
+
+    // Переменная для хранения состояния
     bool public stopped;
+
+    // Модификатор для проверки возможности выполнения функции
     modifier stoppable {
         require(!stopped);
         _;
     }
-    function stop() public onlyDAO {
+
+    // Функция для установки переменной в состояние остановки
+    function stop() onlyDAO {
         stopped = true;
     }
-    function start() public onlyDAO  {
+
+    // Функция для установки переменной в состояние работы
+    function start() onlyDAO{
         stopped = false;
     }
 }
 
 
 // Инициализация контракта
-contract DAOToken is Stoppable, OwnableWithDAO{
+contract DAOToken is Stoppable {
 
     // Объявляем переменную в которой будет название токена
     string public name;
@@ -78,10 +88,6 @@ contract DAOToken is Stoppable, OwnableWithDAO{
     // Объявляем эвент для логгирования события одобрения перевода токенов
     event Approval(address from, address to, uint256 value);
 
-
-    // DAO
-
-    // --- DAO
 
     // Функция инициализации контракта
     function DAOToken(){
@@ -140,11 +146,8 @@ contract DAOToken is Stoppable, OwnableWithDAO{
         // Вызов эвента для логгирования события одобрения перевода токенов
     }
 
-
-    // DAO function
+    // Функция для смены названия токена
     function changeSymbol(string _symbol) onlyDAO public {
         symbol = _symbol;
     }
-
-
 }
