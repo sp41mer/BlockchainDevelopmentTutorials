@@ -1,3 +1,17 @@
+> ## ⚠️ Historical archive (2018) — do not use in production
+>
+> Эти материалы написаны в 2018 году для Solidity `^0.4.x` и стека
+> Mist/Truffle, которых больше не существует. Контракты здесь (включая
+> ERC20 и ICO-примеры) содержат паттерны, которые сегодня небезопасны, —
+> не деплойте их. Для актуальной разработки смотрите
+> [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts/) и
+> [Foundry](https://book.getfoundry.sh/).
+>
+> These tutorials target Solidity `^0.4.x` (2018) and long-dead tooling.
+> The contracts use patterns that are unsafe by today's standards — do not
+> deploy them. For current material see OpenZeppelin Contracts and Foundry.
+> Репозиторий сохранён как исторический архив.
+
 # BlockChain Development
 
 Здесь находятся материалы для моих курсов / туториалов по разработке на BlockChain
